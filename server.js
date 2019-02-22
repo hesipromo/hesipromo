@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 
+// Node Server Initialization
 const app = express();
 
 // DB Config
