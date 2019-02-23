@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 // Load Client model
 const Client = require('../../models/Client');
@@ -44,6 +45,36 @@ router.post('/register', (req, res) => {
 
     })
 
+});
+
+//@route   POST api/client/login
+//@desc    Login Client / Returning a Token
+//@access  Public
+
+router.post('/login', (req, res) => {
+    const email = req.body.email;
+    const password = req.body.password;
+
+//Find Client by email
+Client.findOne({email})
+.then(client => {
+    //Check for Client
+    if(!client){
+        return res.status(404).json({email: "User not found"});
+    }
+
+    //Check Password
+
+    bcrypt.compare(password, client.password)
+    .then(isMatch => {
+        if(isMatch){
+            res.json({msg: "Success"});
+        } else{
+            return res.status(400).json({password: "Password Incorrect"});
+        }
+
+    });
+});
 });
 
 module.exports = router;
