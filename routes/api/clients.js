@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const keys = require('../../config/keys');
 
 // Load Client model
 const Client = require('../../models/Client');
@@ -64,12 +65,25 @@ Client.findOne({email})
     }
 
     //Check Password
-
     bcrypt.compare(password, client.password)
     .then(isMatch => {
         if(isMatch){
-            res.json({msg: "Success"});
-        } else{
+            //Client Matched
+            const payload = { id: client.id, name: client.name}; // Create JWT Payload
+            //Sign Token
+            jwt.sign(
+                payload,
+                keys.secretOrKey,
+                {expiresIn: 3600},
+                (err, token) => {
+                    res.json({
+                        success: true,
+                        token: 'Bearer ' + token
+                    });
+
+                });
+
+        } else {
             return res.status(400).json({password: "Password Incorrect"});
         }
 
