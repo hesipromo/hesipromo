@@ -15,6 +15,10 @@ const ClientSchema = new Schema({
     type: String,
     required: true
   },
+  avata:{
+    type: String,
+    required: true
+  },
   date: {
     type: Date,
     default: Date.now
