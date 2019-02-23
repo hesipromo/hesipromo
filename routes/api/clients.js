@@ -3,6 +3,8 @@ const router = express.Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const keys = require('../../config/keys');
+const passport = require('passport');
+
 
 // Load Client model
 const Client = require('../../models/Client');
@@ -90,5 +92,21 @@ Client.findOne({email})
     });
 });
 });
+
+//@route   GET api/client/current
+//@desc    Return current client
+//@access  Private
+
+router.get(
+    '/current',
+     passport.authenticate('jwt', { session: false}),
+ (req, res) => {
+    res.json({
+        id: req.client.id,
+        name: req.client.name,
+        email: req.client.email
+    });
+});
+
 
 module.exports = router;
