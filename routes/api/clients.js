@@ -2,8 +2,8 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 
-// Load User model
-const User = require('../../models/Client');
+// Load Client model
+const Client = require('../../models/Client');
 
 //@route   GET api/client/test
 //@desc    Test client route
@@ -12,7 +12,7 @@ const User = require('../../models/Client');
 router.get('/test', (req, res) => res.json({msg: 'Clients Works'}));
 
 //@route   POST api/client/register
-//@desc    Register User
+//@desc    Register Client
 //@access  Public
 
 router.post('/register', (req, res) => {
