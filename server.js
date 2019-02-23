@@ -4,10 +4,14 @@ const bodyParser = require('body-parser');
 
 const company = require('./routes/api/company');
 const profile = require('./routes/api/profile');
-const client = require('./routes/api/client');
+const clients = require('./routes/api/clients');
 const post = require('./routes/api/post');
 
 const app = express();
+
+//Body parser middleware
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 app.get('/',(req,res) =>res.send('hello'));
 
@@ -22,7 +26,7 @@ mongoose
 
 // Use Routes
 app.use('/api/company/', company);
-app.use('/api/client/', client);
+app.use('/api/clients/', clients);
 app.use('/api/profile/', profile);
 app.use('/api/post/', post);
 
