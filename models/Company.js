@@ -20,11 +20,8 @@ const CompanySchema = new Schema({
     required: true
   },
   category: {
-    type: String,
+    type: [String],
     required: true
-  },
-  image: {
-    type: String
   },
   date: {
     type: Date,
