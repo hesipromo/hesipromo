@@ -7,6 +7,7 @@ const company = require('./routes/api/company');
 const profile = require('./routes/api/profile');
 const clients = require('./routes/api/clients');
 const post = require('./routes/api/post');
+const PromoProducts = require('./routes/api/PromoProducts');
 
 const app = express();
 
@@ -36,6 +37,7 @@ app.use('/api/company/', company);
 app.use('/api/clients/', clients);
 app.use('/api/profile/', profile);
 app.use('/api/post/', post);
+app.use('/api/PromoProducts/', PromoProducts);
 
 const port = process.env.PORT || 5000;
 
