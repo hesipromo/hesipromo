@@ -26,8 +26,11 @@ router.post('/', passport.authenticate('jwt', {session: false }), (req,res) => {
         //from: req.body.text,
         //to: req.body.text,
         company: req.company.id,
-    })
-})
+    });
+
+    newPromoProduct.save()
+    .then(PromoProduct => res.json(PromoProduct))
+});
 
 
 module.exports = router;
