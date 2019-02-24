@@ -5,6 +5,10 @@ const jwt = require('jsonwebtoken');
 const keys = require('../../config/keys');
 const passport = require('passport');
 
+// Load Input Validation
+const validateRegisterInput = require('../../validation/register');
+const validateLoginInput = require('../../validation/login');
+
 //Load Company Model
 const Company = require('../../models/Company');
 
@@ -30,7 +34,7 @@ router.post('/register', (req, res) =>{
                 password: req.body.password,
                 website: req.body.website,
                 category: req.body.category,
-                company: req.body.company,
+                country: req.body.country,
 
             });
 

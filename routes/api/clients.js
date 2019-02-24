@@ -5,6 +5,9 @@ const jwt = require('jsonwebtoken');
 const keys = require('../../config/keys');
 const passport = require('passport');
 
+// Load Input Validation
+const validateRegisterInput = require('../../validation/register');
+const validateLoginInput = require('../../validation/login');
 
 // Load Client model
 const Client = require('../../models/Client');
@@ -82,7 +85,6 @@ Client.findOne({email})
                         success: true,
                         token: 'Bearer ' + token
                     });
-
                 });
 
         } else {
