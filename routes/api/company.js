@@ -30,6 +30,8 @@ router.post('/register', (req, res) =>{
                 password: req.body.password,
                 website: req.body.website,
                 category: req.body.category,
+                company: req.body.company,
+
             });
 
             bcrypt.genSalt(10,(err, salt) => {
@@ -103,15 +105,14 @@ bcrypt.compare(password, company.password)
 
 router.get(
     '/current',
-     passport.authenticate('jwt', { session: false}),
- (req, res) => {
+    passport.authenticate('jwt', { session: false }),
+    (req, res) => {
     res.json({
         id: req.company.id,
         name: req.company.name,
-        email: req.company.email
+        email: req.company.email,
+        country: req.company.country
     });
 });
-
-
 
 module.exports = router;

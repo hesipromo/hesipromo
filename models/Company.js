@@ -23,6 +23,10 @@ const CompanySchema = new Schema({
     type: String,
     required: true
   },
+  country: {
+    type: String,
+    required: true
+  },
   date: {
     type: Date,
     default: Date.now
