@@ -41,6 +41,12 @@ module.exports = function validateRegisterInput(data) {
     errors.password2 = 'Passwords must match';
   }
 
+  if (!isEmpty(data.website)) {
+    if (!Validator.isURL(data.website)) {
+      errors.website = 'Not a valid URL';
+    }
+  }
+
   return {
     errors,
     isValid: isEmpty(errors)

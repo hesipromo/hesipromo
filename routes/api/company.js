@@ -70,7 +70,7 @@ Company.findOne({email})
 .then( company => {
     //Check for Company
 if(!company){
-    return res.json.status(404)({email: 'Company email not found'})
+    return res.status(404).json({email: 'Company email not found'})
 }
 
 //Check for Password
