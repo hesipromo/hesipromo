@@ -72,4 +72,21 @@ router.get(
       .catch(err => res.status(404).json(err));
   }
 );
+
+//@route   GET api/promo-product
+//@desc    All Promotion products
+//@access  Public
+router.get("/all", (req, res) => {
+  const errors = {};
+
+  PromoProduct.find()
+    .then(products => {
+      if (!products) {
+        errors.noproduct = "There are no products on promotion";
+        return res.status(404).json(errors);
+      }
+      res.json(products);
+    })
+    .catch(err => res.status(404).json(err));
+});
 module.exports = router;
