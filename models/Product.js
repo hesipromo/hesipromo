@@ -11,6 +11,11 @@ const ProductSchema = new Schema({
     type: String,
     required: true
   },
+  category:{
+    type: String,
+    required: true
+
+  },
   description: {
     type: String,
     required: true
@@ -20,11 +25,22 @@ const ProductSchema = new Schema({
   },
   prevprice: {
     type: String,
-    required: true
+    
   },
   newprice: {
     type: String,
+    
+  },
+  from: {
+    type: Date,
     required: true
+  },
+  to: {
+    type: Date
+  },
+  current: {
+    type: Boolean,
+    default: false
   },
   product_category: [
     {

@@ -31,6 +31,7 @@ router.post("/register", (req, res) => {
       const newClient = new Client({
         name: req.body.name,
         email: req.body.email,
+        phonenumber: req.body.phonenumber,
         password: req.body.password
       });
 
@@ -107,7 +108,8 @@ router.get(
     res.json({
       id: req.client.id,
       name: req.client.name,
-      email: req.client.email
+      email: req.client.email,
+      phonenumber: req.client.phonenumber
     });
   }
 );
