@@ -6,8 +6,8 @@ const keys = require("../../config/keys");
 const passport = require("passport");
 
 // Load Input Validation
-const validateRegisterInput = require("../../validation/register");
-const validateLoginInput = require("../../validation/login");
+const validateRegisterInput = require("../../validation/company-register");
+const validateLoginInput = require("../../validation/company-login");
 
 //Load Company Model
 const Company = require("../../models/Company");
@@ -17,6 +17,14 @@ const Company = require("../../models/Company");
 //@access  Public
 
 router.post("/register", (req, res) => {
+  const { errors, isValid } = validateRegisterInput(req.body);
+
+  //Check Validation
+  if (!isValid) {
+    // Return any errors with 400 status
+    return res.status(400).json(errors);
+  }
+
   Company.findOne({ email: req.body.email }).then(company => {
     if (company) {
       return res.status(400).json({ email: "Company email exits" });
@@ -48,6 +56,14 @@ router.post("/register", (req, res) => {
 //@desc    Login company / Returning a Token
 //@access  Public
 router.post("/login", (req, res) => {
+  const { errors, isValid } = validateLoginInput(req.body);
+
+  // // // Check Validation
+  if (!isValid) {
+    // Return any errors with 400 status
+    return res.status(400).json(errors);
+  }
+
   const email = req.body.email;
   const password = req.body.password;
 

@@ -5,26 +5,27 @@ const passport = require("passport");
 
 //PromoProduct Model
 const PromoProduct = require("../../models/PromoProduct");
+
 //Company Model
 const Company = require("../../models/Company");
+
 //Validation
-const validatePromoProductsInput = require("../../validation/PromoProducts");
+const validatePromoProductsInput = require("../../validation/product");
 
 //@route   POST api/PromoProducts
 //@desc    Create PromoProduct
 //@access  Private
-
 router.post(
   "/",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    // const { errors, isValid } = validatePromoProductsInput(req.body);
+    const { errors, isValid } = validatePromoProductsInput(req.body);
 
-    // // Check Validation
-    // if (!isValid) {
-    //   // Return any errors with 400 status
-    //   return res.status(400).json(errors);
-    // }
+    // // // Check Validation
+    if (!isValid) {
+      // Return any errors with 400 status
+      return res.status(400).json(errors);
+    }
 
     // Get fields
     const productFields = {};
@@ -41,7 +42,8 @@ router.post(
       };
       productFields.product_category = newCategory;
     } else {
-      return res.status(400).json({ msg: "Category not defined" });
+      errors.msg = "Category not defined";
+      return res.status(400).json(errors);
     }
 
     // Save New PromoProduct, get promise and response callback in json format
@@ -49,4 +51,24 @@ router.post(
   }
 );
 
+//@route   POST api/PromoProducts
+//@desc    Create PromoProduct
+//@access  Private
+router.get(
+  "/",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    const errors = {};
+
+    PromoProduct.findOne({ company: req.user.id })
+      .then(product => {
+        if (!product) {
+          errors.noproduct = "There is no product for this company";
+          return res.status(404).json(errors);
+        }
+        res.json(product);
+      })
+      .catch(err => res.status(404).json(err));
+  }
+);
 module.exports = router;
