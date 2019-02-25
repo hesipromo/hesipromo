@@ -28,7 +28,7 @@ router.post(
       image: req.body.image,
       prevprice: req.body.prevprice,
       newprice: req.body.newprice
-      //category: req.company.category.id,
+      //category: req.body.category
       //from: req.body.text,
       //to: req.body.text,
       //company: req.company.id,

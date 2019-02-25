@@ -1,5 +1,7 @@
 module.exports = {
-  mongoURI: "mongodb://127.0.0.1:27017/HesiPromo",
+  //Advance
+  //mongoURI: "mongodb://127.0.0.1:27017/HesiPromo",
+   mongoURI: "mongodb://127.0.0.1:27017",
   secretOrKey: "secret"
 };
 // module.exports = {
