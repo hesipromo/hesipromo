@@ -56,6 +56,6 @@ const PromoProductSchema = new Schema({
 });
 
 module.exports = PromoProduct = mongoose.model(
-  "PromoProducts",
+  "promoproducts",
   PromoProductSchema
 );
