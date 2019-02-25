@@ -5,12 +5,15 @@ const Schema = mongoose.Schema;
 const CompanyProfileSchema = new Schema({
   company: {
     type: Schema.Types.ObjectId,
-    ref: 'company'
+    ref: "company"
   },
-  name:{
+  name: {
     type: String,
     required: true
-  } 
+  }
 });
 
-module.exports = CompanyProfile = mongoose.model('companyprofile', CompanyProfileSchema);
+module.exports = CompanyProfile = mongoose.model(
+  "companyprofile",
+  CompanyProfileSchema
+);

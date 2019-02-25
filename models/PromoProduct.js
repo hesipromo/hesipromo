@@ -1,11 +1,11 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 // Create Schema
 const PromoProductSchema = new Schema({
   company: {
     type: Schema.Types.ObjectId,
-    ref: 'company'
+    ref: "company"
   },
   name: {
     type: String,
@@ -26,29 +26,32 @@ const PromoProductSchema = new Schema({
     type: String,
     required: true
   },
-  /* category:[{
-      company:{
-          type: Schema.Types.company.categoryId,
-          ref:"company"ß
-      }
-  }
-  ], */
-  /* from: {
-    type: Date,
-  },
-  to: {
-    type: Date,
-  }, */
-  like:[
-      {
-          client:{
-              type: Schema.Types.ObjectId,
-              ref: 'clients'
-          },date: {
-            type: Date,
-            default: Date.now
+  category: [
+    {
+      company: {
+        type: Schema.Types.company.categoryId,
+        ref: "company"
+      },
+      category: [
+        {
+          name: {
+            type: String
           }
+        }
+      ]
+    }
+  ],
+  like: [
+    {
+      client: {
+        type: Schema.Types.ObjectId,
+        ref: "clients"
+      },
+      date: {
+        type: Date,
+        default: Date.now
       }
+    }
   ],
   date: {
     type: Date,
@@ -56,4 +59,7 @@ const PromoProductSchema = new Schema({
   }
 });
 
-module.exports = PromoProduct = mongoose.model('PromoProducts', PromoProductSchema);
+module.exports = PromoProduct = mongoose.model(
+  "PromoProducts",
+  PromoProductSchema
+);

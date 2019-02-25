@@ -19,10 +19,14 @@ const CompanySchema = new Schema({
     type: String,
     required: true
   },
-  category: {
-    type: String,
-    required: true
-  },
+  category: [
+    {
+      name: {
+        type: String,
+        required: true
+      }
+    }
+  ],
   country: {
     type: String,
     required: false
