@@ -26,7 +26,7 @@ const PromoProductSchema = new Schema({
     type: String,
     required: true
   },
-  category: [
+  product_category: [
     {
       company: {
         type: Schema.Types.company.categoryId,
