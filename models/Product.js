@@ -30,7 +30,7 @@ const ProductSchema = new Schema({
     {
       company: {
         type: Schema.Types.ObjectId,
-        ref: "company"
+        ref: "companies"
       },
       category: {
         type: String
