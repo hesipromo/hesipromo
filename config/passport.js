@@ -23,3 +23,18 @@ module.exports = passport => {
     })
   );
 };
+
+module.exports = passport => {
+  passport.use(
+    new JwtStrategy(opts, (jwt_payload, done) => {
+      Company.findById(jwt_payload.id)
+        .then(company => {
+          if (company) {
+            return done(null, company);
+          }
+          return done(null, false);
+        })
+        .catch(err => console.log(err));
+    })
+  );
+};

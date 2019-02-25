@@ -3,7 +3,10 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const passport = require('passport');
 
+//PromoProduct Model
 const PromoProduct = require('../../models/PromoProduct');
+//Company Model
+const Company = require('../../models/Company');
 
 //@route   GET api/PromoProducts/test
 //@desc    Test PromoProducts route
@@ -12,10 +15,12 @@ const PromoProduct = require('../../models/PromoProduct');
 router.get('/test', (req, res) => res.json({msg: 'PromoProducts Works'}));
 
 //@route   POST api/PromoProducts
-//@desc    Test PromoProducts 
+//@desc    Create PromoProduct
 //@access  Private
 
-router.post('/', passport.authenticate('jwt', {session: false }), (req,res) => {
+router.post(
+    '/',
+    passport.authenticate('jwt', {session: false }), (req, res) => {
     const newPromoProduct = new PromoProduct ({
         name: req.body.name,
         description: req.body.description,
@@ -25,11 +30,12 @@ router.post('/', passport.authenticate('jwt', {session: false }), (req,res) => {
         //category: req.company.category.id,
         //from: req.body.text,
         //to: req.body.text,
-        company: req.company.id,
+        //company: req.company.id,
     });
-
+    
+    //Save New PromoProduct, get promise and response callback in json format
     newPromoProduct.save()
-    .then(PromoProduct => res.json(PromoProduct))
+    .then(PromoProduct => res.json(PromoProduct));
 });
 
 
