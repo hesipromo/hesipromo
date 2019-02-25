@@ -32,10 +32,6 @@ const CompanySchema = new Schema({
   }
 });
 
-<<<<<<< HEAD
-module.exports = Company = mongoose.model("companies", CompanySchema);
-=======
 module.exports = Company = mongoose.model(
   "companies",
   CompanySchema);
->>>>>>> 0ac5b23c6c9318b8fcc925e45794969685d4fff2

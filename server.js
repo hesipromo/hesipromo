@@ -6,11 +6,7 @@ const passport = require("passport");
 const company = require("./routes/api/company");
 const profile = require("./routes/api/companyProfile");
 const clients = require("./routes/api/clients");
-<<<<<<< HEAD
-const promoProducts = require("./routes/api/products");
-=======
 const promoProducts = require("./routes/api/promoProducts");
->>>>>>> 0ac5b23c6c9318b8fcc925e45794969685d4fff2
 
 const app = express();
 
