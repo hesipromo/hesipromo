@@ -29,7 +29,7 @@ const PromoProductSchema = new Schema({
   product_category: [
     {
       company: {
-        type: Schema.Types.company.categoryId,
+        type: Schema.Types.ObjectId,
         ref: "company"
       },
       category: [

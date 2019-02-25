@@ -16,17 +16,12 @@ const CompanySchema = new Schema({
     required: true
   },
   website: {
-    type: String,
+    type: String
+  },
+  category: {
+    type: [String],
     required: true
   },
-  category: [
-    {
-      name: {
-        type: String,
-        required: true
-      }
-    }
-  ],
   country: {
     type: String,
     required: false
