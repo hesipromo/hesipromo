@@ -2,8 +2,9 @@
   "name": "hesipromo",
   "version": "1.0.0",
   "description": "A platform for people to see all promotions going on in their neighbooh",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
+    "start": "node server.js",
     "server": "nodemon server.js"
   },
   "author": "Adonis Rumbwere and Advance Ngwarati",

@@ -35,7 +35,7 @@ app.use("/api/company/", company);
 app.use("/api/clients/", clients);
 app.use("/api/companyProfile/", profile);
 app.use("/api/post/", post);
-app.use("/api/promoProducts/", promoProducts);
+app.use("/api/promo-products/", promoProducts);
 
 const port = process.env.PORT || 5000;
 
