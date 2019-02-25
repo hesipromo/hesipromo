@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-// Creating User Schemas
+// Creating Company Schemas
 const CompanySchema = new Schema({
   name: {
     type: String,
@@ -15,16 +15,12 @@ const CompanySchema = new Schema({
     type: String,
     required: true
   },
-  website: {
-    type: String
-  },
   category: {
     type: [String],
     required: true
   },
   country: {
     type: String,
-    required: false
   },
   date: {
     type: Date,
