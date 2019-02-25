@@ -33,5 +33,5 @@ const CompanySchema = new Schema({
 });
 
 module.exports = Company = mongoose.model(
-  "company",
+  "companies",
   CompanySchema);

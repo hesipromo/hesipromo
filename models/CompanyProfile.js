@@ -5,7 +5,7 @@ const Schema = mongoose.Schema;
 const CompanyProfileSchema = new Schema({
   company: {
     type: Schema.Types.ObjectId,
-    ref: "company"
+    ref: "companies"
   },
   name: {
     type: String,

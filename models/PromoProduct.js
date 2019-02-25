@@ -5,7 +5,7 @@ const Schema = mongoose.Schema;
 const PromoProductSchema = new Schema({
   company: {
     type: Schema.Types.ObjectId,
-    ref: "company"
+    ref: "companies"
   },
   name: {
     type: String,
@@ -30,7 +30,7 @@ const PromoProductSchema = new Schema({
     {
       company: {
         type: Schema.Types.ObjectId,
-        ref: "company"
+        ref: "companies"
       },
       category: {
         type: String
