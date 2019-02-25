@@ -7,12 +7,8 @@ const passport = require("passport");
 const PromoProduct = require("../../models/PromoProduct");
 //Company Model
 const Company = require("../../models/Company");
-
-//@route   GET api/promoProducts/test
-//@desc    Test PromoProducts route
-//@access  Public
-
-router.get("/test", (req, res) => res.json({ msg: "PromoProducts Works" }));
+//Validation
+const validatePromoProductsInput = require("../../validation/PromoProducts");
 
 //@route   POST api/PromoProducts
 //@desc    Create PromoProduct
@@ -22,20 +18,34 @@ router.post(
   "/",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    const newPromoProduct = new PromoProduct({
-      name: req.body.name,
-      description: req.body.description,
-      image: req.body.image,
-      prevprice: req.body.prevprice,
-      newprice: req.body.newprice
-      //category: req.body.category
-      //from: req.body.text,
-      //to: req.body.text,
-      //company: req.company.id,
-    });
+    // const { errors, isValid } = validatePromoProductsInput(req.body);
 
-    //Save New PromoProduct, get promise and response callback in json format
-    newPromoProduct.save().then(PromoProduct => res.json(PromoProduct));
+    // // Check Validation
+    // if (!isValid) {
+    //   // Return any errors with 400 status
+    //   return res.status(400).json(errors);
+    // }
+
+    // Get fields
+    const productFields = {};
+    productFields.user = req.user.id;
+    if (req.body.name) productFields.name = req.body.name;
+    if (req.body.description) productFields.description = req.body.description;
+    if (req.body.prevprice) productFields.prevprice = req.body.prevprice;
+    if (req.body.newprice) productFields.newprice = req.body.newprice;
+    if (req.body.image) productFields.image = req.body.image;
+    // Categories from Company Schema
+    if (req.user.category.indexOf(req.body.category) > -1) {
+      const newCategory = {
+        category: req.body.category
+      };
+      productFields.product_category = newCategory;
+    } else {
+      return res.status(400).json({ msg: "Category not defined" });
+    }
+
+    // Save New PromoProduct, get promise and response callback in json format
+    new PromoProduct(productFields).save().then(product => res.json(product));
   }
 );
 

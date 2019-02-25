@@ -32,13 +32,9 @@ const PromoProductSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: "company"
       },
-      category: [
-        {
-          name: {
-            type: String
-          }
-        }
-      ]
+      category: {
+        type: String
+      }
     }
   ],
   like: [

@@ -12,12 +12,6 @@ const validateLoginInput = require("../../validation/login");
 //Load Company Model
 const Company = require("../../models/Company");
 
-//@route   GET api/company/test
-//@desc    Test company route
-//@access  Public
-
-router.get("/test", (req, res) => res.json({ msg: "Company Works" }));
-
 //@route   POST api/company/register
 //@desc    Register Company
 //@access  Public
