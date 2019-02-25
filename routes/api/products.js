@@ -15,6 +15,7 @@ const validatePromoProductsInput = require("../../validation/product");
 //@route   POST api/PromoProducts
 //@desc    Create PromoProduct
 //@access  Private
+
 router.post(
   "/",
   passport.authenticate("jwt", { session: false }),
@@ -47,7 +48,7 @@ router.post(
       return res.status(400).json(errors);
     }
 
-    // Save New PromoProduct, get promise and response callback in json format
+    // Save New Product, get promise and response callback in json format
     new PromoProduct(productFields).save().then(product => res.json(product));
   }
 );
@@ -72,4 +73,21 @@ router.get(
       .catch(err => res.status(404).json(err));
   }
 );
+
+//@route   GET api/promo-product
+//@desc    All Promotion products
+//@access  Public
+router.get("/all", (req, res) => {
+  const errors = {};
+
+  PromoProduct.find()
+    .then(products => {
+      if (!products) {
+        errors.noproduct = "There are no products on promotion";
+        return res.status(404).json(errors);
+      }
+      res.json(products);
+    })
+    .catch(err => res.status(404).json(err));
+});
 module.exports = router;

@@ -6,26 +6,27 @@ const keys = require("../../config/keys");
 const passport = require("passport");
 
 // Load Input Validation
-const validateRegisterInput = require("../../validation/client-register.js");
+const validateRegisterInput = require("../../validation/client-register");
 const validateLoginInput = require("../../validation/client-login");
 
 // Load Client model
 const Client = require("../../models/Client");
-
-//@route   GET api/client/test
-//@desc    Test client route
-//@access  Public
-
-router.get("/test", (req, res) => res.json({ msg: "Clients Works" }));
 
 //@route   POST api/client/register
 //@desc    Register Client
 //@access  Public
 
 router.post("/register", (req, res) => {
+  const { errors, isValid } = validateRegisterInput(req.body);
+
+  // Validating all body fields
+  if (!isValid) {
+    return res.status(400).json(errors);
+  }
   Client.findOne({ email: req.body.email }).then(client => {
     if (client) {
-      return res.status(400).json({ email: "Email already exits" });
+      errors.email = "Email already exits";
+      return res.status(400).json(errors);
     } else {
       const newClient = new Client({
         name: req.body.name,
@@ -52,6 +53,13 @@ router.post("/register", (req, res) => {
 //@access  Public
 
 router.post("/login", (req, res) => {
+  const { errors, isValid } = validateLoginInput(req.body);
+
+  // Validating all body fields
+  if (!isValid) {
+    return res.status(400).json(errors);
+  }
+
   const email = req.body.email;
   const password = req.body.password;
 
@@ -59,7 +67,8 @@ router.post("/login", (req, res) => {
   Client.findOne({ email }).then(client => {
     //Check for Client
     if (!client) {
-      return res.status(404).json({ email: "User not found" });
+      errors.email = "User not found";
+      return res.status(404).json(errors);
     }
 
     //Check Password
@@ -80,7 +89,8 @@ router.post("/login", (req, res) => {
           }
         );
       } else {
-        return res.status(400).json({ password: "Password Incorrect" });
+        errors.password = "Password Incorrect";
+        return res.status(400).json(errors);
       }
     });
   });

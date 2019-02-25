@@ -1,8 +1,6 @@
 module.exports = {
-  //Advance
+  //Advance and Adonis Local MongoDB
   mongoURI: "mongodb://127.0.0.1:27017/HesiPromo",
-  // Adonis
-  // mongoURI: "mongodb://127.0.0.1:27017",
   secretOrKey: "secret"
 };
 // module.exports = {
