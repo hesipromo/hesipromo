@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 const passport = require("passport");
 
 //PromoProduct Model
-const PromoProduct = require("../../models/PromoProduct");
+const PromoProduct = require("../../models/Product");
 
 //Company Model
 const Company = require("../../models/Company");
@@ -29,12 +29,13 @@ router.post(
 
     // Get fields
     const productFields = {};
-    productFields.user = req.user.id;
+    productFields.company = req.user.id;
     if (req.body.name) productFields.name = req.body.name;
     if (req.body.description) productFields.description = req.body.description;
     if (req.body.prevprice) productFields.prevprice = req.body.prevprice;
     if (req.body.newprice) productFields.newprice = req.body.newprice;
     if (req.body.image) productFields.image = req.body.image;
+
     // Categories from Company Schema
     if (req.user.category.indexOf(req.body.category) > -1) {
       const newCategory = {
@@ -51,8 +52,8 @@ router.post(
   }
 );
 
-//@route   POST api/PromoProducts
-//@desc    Create PromoProduct
+//@route   GET api/promo-product
+//@desc    Products For Logged In Company
 //@access  Private
 router.get(
   "/",

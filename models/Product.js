@@ -1,11 +1,11 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-// Create Schema
-const PromoProductSchema = new Schema({
+// Creating Profile Schemas
+const ProductSchema = new Schema({
   company: {
     type: Schema.Types.ObjectId,
-    ref: "company"
+    ref: "companies"
   },
   name: {
     type: String,
@@ -55,7 +55,4 @@ const PromoProductSchema = new Schema({
   }
 });
 
-module.exports = PromoProduct = mongoose.model(
-  "promoproducts",
-  PromoProductSchema
-);
+module.exports = Product = mongoose.model("products", ProductSchema);

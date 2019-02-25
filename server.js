@@ -6,8 +6,7 @@ const passport = require("passport");
 const company = require("./routes/api/company");
 const profile = require("./routes/api/companyProfile");
 const clients = require("./routes/api/clients");
-const post = require("./routes/api/post");
-const promoProducts = require("./routes/api/promoProducts");
+const promoProducts = require("./routes/api/products");
 
 const app = express();
 
@@ -34,7 +33,6 @@ require("./config/passport")(passport);
 app.use("/api/company/", company);
 app.use("/api/clients/", clients);
 app.use("/api/company-profile/", profile);
-app.use("/api/post/", post);
 app.use("/api/promo-products/", promoProducts);
 
 const port = process.env.PORT || 5000;
