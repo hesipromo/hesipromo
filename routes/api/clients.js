@@ -163,7 +163,6 @@ router.post(
 
     // Get fields
     const profileFields = {};
-    profileFields.client = req.user.id;
     if (req.body.name) {
       profileFields.name = req.body.name;
     } else {
@@ -173,6 +172,11 @@ router.post(
       profileFields.email = req.body.email;
     } else {
       profileFields.email = req.user.email;
+    }
+    if (req.body.picture) {
+      profileFields.picture = req.body.picture;
+    } else {
+      profileFields.picture = req.user.picture;
     }
     if (req.body.password) {
       profileFields.password = req.body.password;
@@ -197,6 +201,19 @@ router.post(
         // Save Profile
         new Client(profileFields).save().then(profile => res.json(profile));
       }
+    });
+  }
+);
+
+// @route   DELETE api/clients
+// @desc    Delete client
+// @access  Private
+router.delete(
+  "/",
+  passport.authenticate("client", { session: false }),
+  (req, res) => {
+    Client.findOneAndRemove({ _id: req.user.id }).then(() => {
+      res.json({ success: true });
     });
   }
 );

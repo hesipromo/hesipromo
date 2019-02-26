@@ -11,6 +11,9 @@ const ClientSchema = new Schema({
     type: String,
     required: true
   },
+  picture: {
+    type: String
+  },
   phonenumber: {
     type: String,
     required: true

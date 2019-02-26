@@ -68,7 +68,7 @@ router.post("/login", (req, res) => {
   Admin.findOne({ email }).then(admin => {
     //Check for Admin
     if (!admin) {
-      errors.email = "User not found";
+      errors.email = "Admin not found";
       return res.status(404).json(errors);
     }
 
@@ -98,7 +98,7 @@ router.post("/login", (req, res) => {
 });
 
 //@route   GET api/admin/current
-//@desc    Return current admin
+//@desc    Return current logged in admin
 //@access  Private
 
 router.get(
@@ -106,6 +106,92 @@ router.get(
   passport.authenticate("admin", { session: false }),
   (req, res) => {
     res.json(req.user);
+  }
+);
+
+// @route   GET api/admin/all
+// @desc    Return  all admins
+// @access  Public
+router.get("/all", (req, res) => {
+  const errors = {};
+
+  Admin.find()
+    .then(admin => {
+      if (!admin) {
+        errors.noclientprofile = "There are no clients profile";
+        return res.status(404).json(errors);
+      }
+
+      res.json(admin);
+    })
+    .catch(err =>
+      res.status(404).json({ profile: "There are no clients profile" })
+    );
+});
+
+// @route   POST api/admin/profile
+// @desc    Edit admin profile
+// @access  Private
+router.post(
+  "/profile",
+  passport.authenticate("admin", { session: false }),
+  (req, res) => {
+    //   TODO: Fields validation
+
+    // Get fields
+    const profileFields = {};
+    if (req.body.name) {
+      profileFields.name = req.body.name;
+    } else {
+      profileFields.name = req.user.name;
+    }
+    if (req.body.email) {
+      profileFields.email = req.body.email;
+    } else {
+      profileFields.email = req.user.email;
+    }
+    if (req.body.picture) {
+      profileFields.picture = req.body.picture;
+    } else {
+      profileFields.picture = req.user.picture;
+    }
+    if (req.body.password) {
+      profileFields.password = req.body.password;
+    } else {
+      profileFields.password = req.user.password;
+    }
+    if (req.body.phonenumber) {
+      profileFields.phonenumber = req.body.phonenumber;
+    } else {
+      profileFields.phonenumber = req.user.phonenumber;
+    }
+
+    Admin.findOne({ _id: req.user.id }).then(admin => {
+      if (admin) {
+        // Update
+        Admin.findOneAndUpdate(
+          { _id: req.user.id },
+          { $set: profileFields },
+          { new: true }
+        ).then(admin => res.json(admin));
+      } else {
+        // Save Profile
+        new Admin(profileFields).save().then(profile => res.json(profile));
+      }
+    });
+  }
+);
+
+// @route   DELETE api/admin
+// @desc    Delete admin
+// @access  Private
+router.delete(
+  "/",
+  passport.authenticate("admin", { session: false }),
+  (req, res) => {
+    Admin.findOneAndRemove({ _id: req.user.id }).then(() => {
+      res.json({ success: true });
+    });
   }
 );
 
