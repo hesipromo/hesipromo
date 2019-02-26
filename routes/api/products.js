@@ -1,19 +1,24 @@
 const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
+const keys = require("../../config/keys");
 const passport = require("passport");
 
+
 //PromoProduct Model
-const PromoProduct = require("../../models/Product");
+const Product = require("../../models/Product");
 
 //Company Model
 const Company = require("../../models/Company");
 
+//Client Model
+const Client = require("../../models/Client");
+
 //Validation
 const validatePromoProductsInput = require("../../validation/product");
 
-//@route   POST api/PromoProducts
-//@desc    Create PromoProduct
+//@route   POST api/Products
+//@desc    Create Product
 //@access  Private
 
 router.post(
@@ -62,7 +67,7 @@ router.get(
   (req, res) => {
     const errors = {};
 
-    PromoProduct.findOne({ company: req.user.id })
+    Product.findOne({ company: req.user.id })
       .then(product => {
         if (!product) {
           errors.noproduct = "There is no product for this company";
@@ -80,7 +85,7 @@ router.get(
 router.get("/all", (req, res) => {
   const errors = {};
 
-  PromoProduct.find()
+  Product.find()
     .then(products => {
       if (!products) {
         errors.noproduct = "There are no products on promotion";
@@ -91,6 +96,36 @@ router.get("/all", (req, res) => {
     .catch(err => res.status(404).json(err));
 });
 
+// @route   POST api/product/like/:id
+// @desc    Like Product
+// @access  Private
+
+router.post(
+  '/like/:id',
+  passport.authenticate('client', { session: false }),
+  (req, res) => {
+    Client.findOne({ _id: req.user.id }).then(client => {
+      Product.findById(req.params.id)
+        .then(product => {
+          if (
+            product.likes.filter(like => like.client.toString() === req.user.id)
+              .length > 0
+          ) {
+            return res
+              .status(400)
+              .json({ alreadyliked: 'User already liked this product' });
+          }
+
+          // Add user id to likes array
+          product.likes.unshift({ client: req.user.id });
+
+          product.save().then(product => res.json(product));
+        })
+        .catch(err => res.status(404).json({ productnotfound: 'No product found' }));
+    });
+  }
+);
+
 
 // @route   DELETE api/product/:id
 // @desc    Delete Product
@@ -100,11 +135,11 @@ router.delete(
   '/:id',
   passport.authenticate('company', { session: false }),
   (req, res) => {
-    Company.findOne({ user: req.user.id }).then(company => {
+    Company.findOne({ _id: req.user.id }).then(company => {
       Product.findById(req.params.id)
         .then(product => {
           // Check for Promo Product Owner
-          if (product.user.toString() !== req.user.id) {
+          if (product.company.toString() !== req.user.id) {
             return res
               .status(401)
               .json({ notauthorized: 'User not authorized' });
