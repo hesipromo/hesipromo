@@ -3,7 +3,7 @@ const router = express.Router();
 const passport = require("passport");
 
 // Load Client model
-const ClientProfile = require("../../models/ClientProfile");
+const Client = require("../../models/Client");
 
 // @route   GET api/client-profile/
 // @desc    Get client profile
@@ -14,7 +14,7 @@ router.get(
   (req, res) => {
     const errors = {};
 
-    ClientProfile.findOne({ client: req.user.id })
+    Client.findOne({ _id: req.user.id })
       .then(client => {
         if (!client) {
           errors.noclientprofile = "There is no profile for this client";
@@ -32,7 +32,7 @@ router.get(
 router.get("/all", (req, res) => {
   const errors = {};
 
-  ClientProfile.find()
+  Client.find()
     .then(client => {
       if (!client) {
         errors.noclientprofile = "There are no clients profile";
@@ -77,19 +77,17 @@ router.post(
       profileFields.phonenumber = req.user.phonenumber;
     }
 
-    ClientProfile.findOne({ client: req.user.id }).then(client => {
+    Client.findOne({ _id: req.user.id }).then(client => {
       if (client) {
         // Update
-        ClientProfile.findOneAndUpdate(
-          { client: req.user.id },
+        Client.findOneAndUpdate(
+          { _id: req.user.id },
           { $set: profileFields },
           { new: true }
         ).then(client => res.json(client));
       } else {
         // Save Profile
-        new ClientProfile(profileFields)
-          .save()
-          .then(profile => res.json(profile));
+        new Client(profileFields).save().then(profile => res.json(profile));
       }
     });
   }

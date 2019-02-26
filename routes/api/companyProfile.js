@@ -4,7 +4,7 @@ const passport = require("passport");
 
 //Load Company Profile Model
 
-const CompanyProfile = require("../../models/ClientProfile");
+const CompanyProfile = require("../../models/CompanyProfile");
 
 //Load Company model
 
