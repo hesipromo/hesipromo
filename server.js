@@ -6,7 +6,6 @@ const passport = require("passport");
 const company = require("./routes/api/company");
 const profile = require("./routes/api/companyProfile");
 const clients = require("./routes/api/clients");
-const clientProfile = require("./routes/api/clientsProfile");
 const admin = require("./routes/api/admin");
 const promoProducts = require("./routes/api/products");
 
@@ -36,7 +35,6 @@ app.use("/api/company/", company);
 app.use("/api/clients/", clients);
 app.use("/api/admin/", admin);
 app.use("/api/company-profile/", profile);
-app.use("/api/client-profile/", clientProfile);
 app.use("/api/promo-products/", promoProducts);
 
 const port = process.env.PORT || 5000;

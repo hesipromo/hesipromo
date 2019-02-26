@@ -12,7 +12,7 @@ const validateLoginInput = require("../../validation/client-login");
 // Load Client model
 const Client = require("../../models/Client");
 
-//@route   POST api/client/register
+//@route   POST api/clients/register
 //@desc    Register Client
 //@access  Public
 
@@ -49,7 +49,7 @@ router.post("/register", (req, res) => {
   });
 });
 
-//@route   POST api/client/login
+//@route   POST api/clients/login
 //@desc    Login Client / Returning a Token
 //@access  Public
 
@@ -97,7 +97,7 @@ router.post("/login", (req, res) => {
   });
 });
 
-//@route   GET api/client/current
+//@route   GET api/clients/current
 //@desc    Return current client
 //@access  Private
 
@@ -106,6 +106,98 @@ router.get(
   passport.authenticate("client", { session: false }),
   (req, res) => {
     res.json(req.user);
+  }
+);
+
+/* ClIENT PROFILE */
+
+// @route   GET api/clients/profile/
+// @desc    Get client profile
+// @access  Private
+router.get(
+  "/profile",
+  passport.authenticate("client", { session: false }),
+  (req, res) => {
+    const errors = {};
+
+    Client.findOne({ _id: req.user.id })
+      .then(client => {
+        if (!client) {
+          errors.noclientprofile = "There is no profile for this client";
+          return res.status(404).json(errors);
+        }
+        res.json(client);
+      })
+      .catch(err => res.status(404).json(err));
+  }
+);
+
+// @route   GET api/clients/profile/all
+// @desc    Get all client profiles
+// @access  Public
+router.get("/profile/all", (req, res) => {
+  const errors = {};
+
+  Client.find()
+    .then(client => {
+      if (!client) {
+        errors.noclientprofile = "There are no clients profile";
+        return res.status(404).json(errors);
+      }
+
+      res.json(client);
+    })
+    .catch(err =>
+      res.status(404).json({ profile: "There are no clients profile" })
+    );
+});
+
+// @route   POST api/clients/profile
+// @desc    Create or edit client profile
+// @access  Private
+router.post(
+  "/",
+  passport.authenticate("client", { session: false }),
+  (req, res) => {
+    //   TODO: Fields validation
+
+    // Get fields
+    const profileFields = {};
+    profileFields.client = req.user.id;
+    if (req.body.name) {
+      profileFields.name = req.body.name;
+    } else {
+      profileFields.name = req.user.name;
+    }
+    if (req.body.email) {
+      profileFields.email = req.body.email;
+    } else {
+      profileFields.email = req.user.email;
+    }
+    if (req.body.password) {
+      profileFields.password = req.body.password;
+    } else {
+      profileFields.password = req.user.password;
+    }
+    if (req.body.phonenumber) {
+      profileFields.phonenumber = req.body.phonenumber;
+    } else {
+      profileFields.phonenumber = req.user.phonenumber;
+    }
+
+    Client.findOne({ _id: req.user.id }).then(client => {
+      if (client) {
+        // Update
+        Client.findOneAndUpdate(
+          { _id: req.user.id },
+          { $set: profileFields },
+          { new: true }
+        ).then(client => res.json(client));
+      } else {
+        // Save Profile
+        new Client(profileFields).save().then(profile => res.json(profile));
+      }
+    });
   }
 );
 
