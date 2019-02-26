@@ -90,4 +90,32 @@ router.get("/all", (req, res) => {
     })
     .catch(err => res.status(404).json(err));
 });
+
+
+// @route   DELETE api/product/:id
+// @desc    Delete Product
+// @access  Private
+
+router.delete(
+  '/:id',
+  passport.authenticate('company', { session: false }),
+  (req, res) => {
+    Company.findOne({ user: req.user.id }).then(company => {
+      Product.findById(req.params.id)
+        .then(product => {
+          // Check for Promo Product Owner
+          if (product.user.toString() !== req.user.id) {
+            return res
+              .status(401)
+              .json({ notauthorized: 'User not authorized' });
+          }
+
+          // Delete
+          product.remove().then(() => res.json({ success: true }));
+        })
+        .catch(err => res.status(404).json({ productnotfound: 'No post found' }));
+    });
+  }
+);
+
 module.exports = router;
