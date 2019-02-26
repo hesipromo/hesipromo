@@ -6,14 +6,14 @@ const keys = require("../../config/keys");
 const passport = require("passport");
 
 // Load Input Validation
-const validateRegisterInput = require("../../validation/client-register");
-const validateLoginInput = require("../../validation/client-login");
+const validateRegisterInput = require("../../validation/admin-register");
+const validateLoginInput = require("../../validation/admin-login");
 
-// Load Client model
-const Client = require("../../models/Client");
+// Load Admin model
+const Admin = require("../../models/Admin");
 
-//@route   POST api/client/register
-//@desc    Register Client
+//@route   POST api/admin/register
+//@desc    Register Admin
 //@access  Public
 
 router.post("/register", (req, res) => {
@@ -23,12 +23,12 @@ router.post("/register", (req, res) => {
   if (!isValid) {
     return res.status(400).json(errors);
   }
-  Client.findOne({ email: req.body.email }).then(client => {
-    if (client) {
+  Admin.findOne({ email: req.body.email }).then(admin => {
+    if (admin) {
       errors.email = "Email already exits";
       return res.status(400).json(errors);
     } else {
-      const newClient = new Client({
+      const newAdmin = new Admin({
         name: req.body.name,
         email: req.body.email,
         phonenumber: req.body.phonenumber,
@@ -36,12 +36,12 @@ router.post("/register", (req, res) => {
       });
 
       bcrypt.genSalt(10, (err, salt) => {
-        bcrypt.hash(newClient.password, salt, (err, hash) => {
+        bcrypt.hash(newAdmin.password, salt, (err, hash) => {
           if (err) throw err;
-          newClient.password = hash;
-          newClient
+          newAdmin.password = hash;
+          newAdmin
             .save()
-            .then(client => res.json(client))
+            .then(admin => res.json(admin))
             .catch(err => console.log(err));
         });
       });
@@ -49,8 +49,8 @@ router.post("/register", (req, res) => {
   });
 });
 
-//@route   POST api/client/login
-//@desc    Login Client / Returning a Token
+//@route   POST api/admin/login
+//@desc    Login Admin / Returning a Token
 //@access  Public
 
 router.post("/login", (req, res) => {
@@ -64,19 +64,19 @@ router.post("/login", (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
 
-  //Find Client by email
-  Client.findOne({ email }).then(client => {
-    //Check for Client
-    if (!client) {
+  //Find Admin by email
+  Admin.findOne({ email }).then(admin => {
+    //Check for Admin
+    if (!admin) {
       errors.email = "User not found";
       return res.status(404).json(errors);
     }
 
     //Check Password
-    bcrypt.compare(password, client.password).then(isMatch => {
+    bcrypt.compare(password, admin.password).then(isMatch => {
       if (isMatch) {
-        //Client Matched
-        const payload = { id: client.id, name: client.name }; // Create JWT Payload
+        //Admin Matched
+        const payload = { id: admin.id, name: admin.name }; // Create JWT Payload
         //Sign Token
         jwt.sign(
           payload,
@@ -97,13 +97,13 @@ router.post("/login", (req, res) => {
   });
 });
 
-//@route   GET api/client/current
-//@desc    Return current client
+//@route   GET api/admin/current
+//@desc    Return current admin
 //@access  Private
 
 router.get(
   "/current",
-  passport.authenticate("client", { session: false }),
+  passport.authenticate("admin", { session: false }),
   (req, res) => {
     res.json(req.user);
   }

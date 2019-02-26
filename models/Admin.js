@@ -1,8 +1,8 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-// Creating Company Schemas
-const CompanySchema = new Schema({
+// Creating Admin Schemas
+const AdminSchema = new Schema({
   name: {
     type: String,
     required: true
@@ -11,19 +11,13 @@ const CompanySchema = new Schema({
     type: String,
     required: true
   },
-  password: {
+  phonenumber: {
     type: String,
     required: true
   },
-  logo: {
-    type: String
-  },
-  category: {
-    type: [String],
+  password: {
+    type: String,
     required: true
-  },
-  country: {
-    type: String
   },
   date: {
     type: Date,
@@ -31,4 +25,4 @@ const CompanySchema = new Schema({
   }
 });
 
-module.exports = Company = mongoose.model("companies", CompanySchema);
+module.exports = Client = mongoose.model("admins", AdminSchema);

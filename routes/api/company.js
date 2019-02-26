@@ -104,14 +104,19 @@ router.post("/login", (req, res) => {
 
 router.get(
   "/current",
-  passport.authenticate("jwt", { session: false }),
+  passport.authenticate("company", { session: false }),
   (req, res) => {
-    res.json({
-      id: req.company.id,
-      name: req.company.name,
-      email: req.company.email,
-      country: req.company.country
-    });
+    const errors = {};
+
+    Company.findOne({ _id: req.user.id })
+      .then(company => {
+        if (!company) {
+          errors.nocompany = "There is no company for this user";
+          return res.status(404).json(errors);
+        }
+        res.json(company);
+      })
+      .catch(err => res.status(404).json(err));
   }
 );
 

@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-// Creating User Schemas
+// Creating Client Schemas
 const ClientSchema = new Schema({
   name: {
     type: String,
@@ -25,6 +25,4 @@ const ClientSchema = new Schema({
   }
 });
 
-module.exports = Client = mongoose.model(
-  "clients",
-  ClientSchema);
+module.exports = Client = mongoose.model("clients", ClientSchema);
