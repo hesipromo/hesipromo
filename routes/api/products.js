@@ -1,9 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
+
 const keys = require("../../config/keys");
 const passport = require("passport");
-
 
 //PromoProduct Model
 const Product = require("../../models/Product");
@@ -17,13 +17,13 @@ const Client = require("../../models/Client");
 //Validation
 const validatePromoProductsInput = require("../../validation/product");
 
-//@route   POST api/Products
+//@route   POST api/product
 //@desc    Create Product
 //@access  Private
 
 router.post(
   "/",
-  passport.authenticate("jwt", { session: false }),
+  passport.authenticate("company", { session: false }),
   (req, res) => {
     const { errors, isValid } = validatePromoProductsInput(req.body);
 
@@ -45,7 +45,8 @@ router.post(
     // Categories from Company Schema
     if (req.user.category.indexOf(req.body.category) > -1) {
       const newCategory = {
-        category: req.body.category
+        category: req.body.category,
+        company: req.user.id
       };
       productFields.product_category = newCategory;
     } else {
@@ -54,7 +55,7 @@ router.post(
     }
 
     // Save New Product, get promise and response callback in json format
-    new PromoProduct(productFields).save().then(product => res.json(product));
+    new Product(productFields).save().then(product => res.json(product));
   }
 );
 
@@ -63,7 +64,7 @@ router.post(
 //@access  Private
 router.get(
   "/",
-  passport.authenticate("jwt", { session: false }),
+  passport.authenticate("company", { session: false }),
   (req, res) => {
     const errors = {};
 
@@ -101,8 +102,8 @@ router.get("/all", (req, res) => {
 // @access  Private
 
 router.post(
-  '/like/:id',
-  passport.authenticate('client', { session: false }),
+  "/like/:id",
+  passport.authenticate("client", { session: false }),
   (req, res) => {
     Client.findOne({ _id: req.user.id }).then(client => {
       Product.findById(req.params.id)
@@ -113,7 +114,7 @@ router.post(
           ) {
             return res
               .status(400)
-              .json({ alreadyliked: 'User already liked this product' });
+              .json({ alreadyliked: "User already liked this product" });
           }
 
           // Add user id to likes array
@@ -121,19 +122,20 @@ router.post(
 
           product.save().then(product => res.json(product));
         })
-        .catch(err => res.status(404).json({ productnotfound: 'No product found' }));
+        .catch(err =>
+          res.status(404).json({ productnotfound: "No product found" })
+        );
     });
   }
 );
-
 
 // @route   DELETE api/product/:id
 // @desc    Delete Product
 // @access  Private
 
 router.delete(
-  '/:id',
-  passport.authenticate('company', { session: false }),
+  "/:id",
+  passport.authenticate("company", { session: false }),
   (req, res) => {
     Company.findOne({ _id: req.user.id }).then(company => {
       Product.findById(req.params.id)
@@ -142,13 +144,15 @@ router.delete(
           if (product.company.toString() !== req.user.id) {
             return res
               .status(401)
-              .json({ notauthorized: 'User not authorized' });
+              .json({ notauthorized: "User not authorized" });
           }
 
           // Delete
           product.remove().then(() => res.json({ success: true }));
         })
-        .catch(err => res.status(404).json({ productnotfound: 'No post found' }));
+        .catch(err =>
+          res.status(404).json({ productnotfound: "No product found" })
+        );
     });
   }
 );

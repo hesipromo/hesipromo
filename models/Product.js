@@ -11,11 +11,6 @@ const ProductSchema = new Schema({
     type: String,
     required: true
   },
-  category:{
-    type: String,
-    required: true
-
-  },
   description: {
     type: String,
     required: true
@@ -24,16 +19,13 @@ const ProductSchema = new Schema({
     type: String
   },
   prevprice: {
-    type: String,
-    
+    type: String
   },
   newprice: {
-    type: String,
-    
+    type: String
   },
   from: {
-    type: Date,
-    required: true
+    type: Date
   },
   to: {
     type: Date
@@ -53,7 +45,7 @@ const ProductSchema = new Schema({
       }
     }
   ],
-  like: [
+  likes: [
     {
       client: {
         type: Schema.Types.ObjectId,

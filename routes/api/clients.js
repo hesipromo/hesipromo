@@ -11,6 +11,7 @@ const validateLoginInput = require("../../validation/client-login");
 
 // Load Client model
 const Client = require("../../models/Client");
+const Product = require("../../models/Product");
 
 //@route   POST api/clients/register
 //@desc    Register Client
