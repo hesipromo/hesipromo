@@ -28,4 +28,4 @@ const AdminSchema = new Schema({
   }
 });
 
-module.exports = Client = mongoose.model("admins", AdminSchema);
+module.exports = Admin = mongoose.model("admins", AdminSchema);

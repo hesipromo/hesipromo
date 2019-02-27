@@ -34,17 +34,14 @@ const ProductSchema = new Schema({
     type: Boolean,
     default: false
   },
-  product_category: [
-    {
-      company: {
-        type: Schema.Types.ObjectId,
-        ref: "companies"
-      },
-      category: {
-        type: String
-      }
-    }
-  ],
+  category: {
+    type: String,
+    required: true
+  },
+  location: {
+    type: [String],
+    required: true
+  },
   likes: [
     {
       client: {

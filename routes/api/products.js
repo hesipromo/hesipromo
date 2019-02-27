@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
+const cc = require("full-countries-cities");
 
 const keys = require("../../config/keys");
 const passport = require("passport");
@@ -44,13 +45,22 @@ router.post(
 
     // Categories from Company Schema
     if (req.user.category.indexOf(req.body.category) > -1) {
-      const newCategory = {
-        category: req.body.category,
-        company: req.user.id
-      };
-      productFields.product_category = newCategory;
+      productFields.category = req.body.category;
     } else {
       errors.msg = "Category not defined";
+      return res.status(400).json(errors);
+    }
+    // Location Logic
+    const cities = cc.getCities(req.user.country);
+    if (cities) {
+      if (cities.indexOf(req.body.location) > -1) {
+        productFields.location = req.body.location;
+      } else {
+        errors.msg = "City not defined";
+        return res.status(400).json(errors);
+      }
+    } else {
+      errors.msg = "City not defined";
       return res.status(400).json(errors);
     }
 
@@ -80,7 +90,7 @@ router.get(
   }
 );
 
-//@route   GET api/promo-product
+//@route   GET api/product
 //@desc    All Promotion products
 //@access  Public
 router.get("/all", (req, res) => {

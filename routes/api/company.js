@@ -4,6 +4,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const keys = require("../../config/keys");
 const passport = require("passport");
+const cc = require("full-countries-cities");
 
 // Load Input Validation
 const validateRegisterInput = require("../../validation/company-register");

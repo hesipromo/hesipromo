@@ -15,15 +15,13 @@ const CompanySchema = new Schema({
     type: String,
     required: true
   },
-  logo: {
-    type: String
-  },
   category: {
     type: [String],
     required: true
   },
   country: {
-    type: String
+    type: String,
+    required: true
   },
   date: {
     type: Date,
