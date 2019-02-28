@@ -1,9 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const mongoose = require("mongoose");
 const cc = require("full-countries-cities");
-
-const keys = require("../../config/keys");
 const passport = require("passport");
 
 //PromoProduct Model
@@ -42,6 +39,8 @@ router.post(
     if (req.body.prevprice) productFields.prevprice = req.body.prevprice;
     if (req.body.newprice) productFields.newprice = req.body.newprice;
     if (req.body.image) productFields.image = req.body.image;
+    if (req.body.from) productFields.from = req.body.from;
+    if (req.body.to) productFields.to = req.body.to;
 
     // Categories from Company Schema
     if (req.user.category.indexOf(req.body.category) > -1) {
@@ -69,7 +68,7 @@ router.post(
   }
 );
 
-//@route   GET api/promo-product
+//@route   GET api/product
 //@desc    Products For Logged In Company
 //@access  Private
 router.get(
