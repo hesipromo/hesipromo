@@ -23,32 +23,16 @@ router.post(
     const profileFields = {};
     profileFields.company = req.user.id;
     if (req.body.website) profileFields.website = req.body.website;
-
-    if (req.body.name) {
-      profileFields.name = req.body.name;
-    } else {
-      profileFields.name = req.user.name;
-    }
-    if (req.body.email) {
-      profileFields.email = req.body.email;
-    } else {
-      profileFields.email = req.user.email;
-    }
-    if (req.body.password) {
-      profileFields.password = req.body.password;
-    } else {
-      profileFields.password = req.user.password;
-    }
+    if (req.body.telnumber) profileFields.telnumber = req.body.telnumber;
+    if (req.body.logo) profileFields.logo = req.body.logo;
+    if (req.body.name) profileFields.name = req.user.name;
+    if (req.body.email) profileFields.email = req.user.email;
 
     // Location Fields
     profileFields.location = [];
     if (req.body.city) profileFields.location.city = req.body.city;
     if (req.body.street) profileFields.location.street = req.body.street;
-    if (req.body.location) {
-      profileFields.location.country = req.body.location;
-    } else {
-      profileFields.location.country = req.user.country;
-    }
+    if (req.body.country) profileFields.location.country = req.user.country;
 
     //Edit or create Social links
     profileFields.social = {};
@@ -57,31 +41,14 @@ router.post(
     if (req.body.linkedin) profileFields.social.linkedin = req.body.linkedin;
     if (req.body.instagram) profileFields.social.instagram = req.body.instagram;
 
-    CompanyProfile.findOne({ company: req.user.id }).then(company => {
-      if (company) {
+    CompanyProfile.findOne({ company: req.user.id }).then(profile => {
+      if (profile) {
         // Update
-
         CompanyProfile.update(
-          {
-            company: { $in: req.user.id }
-          },
-          {
-            $pullAll: { companies: req.user.id }
-          },
-          {
-            $set: profileFields
-          },
-          {
-            multi: true
-          },
-          function(err, count) {
-            if (err) {
-              console.log(err);
-            } else {
-              console.log(count);
-            }
-          }
-        ).then(company => res.json(company));
+          { company: req.user.id },
+          { $set: profileFields },
+          { new: true }
+        ).then(profile => res.json(profile));
       } else {
         // Save Profile
         new CompanyProfile(profileFields)

@@ -11,6 +11,12 @@ const CompanyProfileSchema = new Schema({
     type: String,
     required: true
   },
+  email: {
+    type: Schema.Types.String
+  },
+  telnumber: {
+    type: String
+  },
   logo: {
     type: String
   },
