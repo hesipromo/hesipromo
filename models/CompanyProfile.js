@@ -11,15 +11,31 @@ const CompanyProfileSchema = new Schema({
     type: String,
     required: true
   },
-  logo: { 
-    type: String,
+  email: {
+    type: Schema.Types.String
   },
-  website:{
-    type: String,
-  },
-  location: {
+  telnumber: {
     type: String
   },
+  logo: {
+    type: String
+  },
+  website: {
+    type: String
+  },
+  location: [
+    {
+      country: {
+        type: Schema.Types.String
+      },
+      city: {
+        type: [String]
+      },
+      street: {
+        type: String
+      }
+    }
+  ],
   social: {
     twitter: {
       type: String
@@ -33,9 +49,7 @@ const CompanyProfileSchema = new Schema({
     instagram: {
       type: String
     }
-  },
-  
-
+  }
 });
 
 module.exports = CompanyProfile = mongoose.model(

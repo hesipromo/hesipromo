@@ -34,7 +34,7 @@ require("./config/passport")(passport);
 app.use("/api/company/", company);
 app.use("/api/clients/", clients);
 app.use("/api/admin/", admin);
-app.use("/api/company-profile/", profile);
+app.use("/api/company/profile/", profile);
 app.use("/api/product/", product);
 
 const port = process.env.PORT || 5000;

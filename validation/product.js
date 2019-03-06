@@ -9,6 +9,7 @@ module.exports = function validatePromoProductsInput(data) {
   data.prevprice = !isEmpty(data.prevprice) ? data.prevprice : "";
   data.newprice = !isEmpty(data.newprice) ? data.newprice : "";
   data.category = !isEmpty(data.category) ? data.category : "";
+  data.location = !isEmpty(data.location) ? data.location : "";
 
   if (Validator.isEmpty(data.name)) {
     errors.name = "Product name is required";
@@ -25,6 +26,9 @@ module.exports = function validatePromoProductsInput(data) {
   }
   if (Validator.isEmpty(data.category)) {
     errors.category = "Category field is required";
+  }
+  if (Validator.isEmpty(data.location)) {
+    errors.location = "Location(s) field is required";
   }
 
   return {

@@ -1,8 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const mongoose = require("mongoose");
-
-const keys = require("../../config/keys");
+const cc = require("full-countries-cities");
 const passport = require("passport");
 
 //PromoProduct Model
@@ -41,16 +39,27 @@ router.post(
     if (req.body.prevprice) productFields.prevprice = req.body.prevprice;
     if (req.body.newprice) productFields.newprice = req.body.newprice;
     if (req.body.image) productFields.image = req.body.image;
+    if (req.body.from) productFields.from = req.body.from;
+    if (req.body.to) productFields.to = req.body.to;
 
     // Categories from Company Schema
     if (req.user.category.indexOf(req.body.category) > -1) {
-      const newCategory = {
-        category: req.body.category,
-        company: req.user.id
-      };
-      productFields.product_category = newCategory;
+      productFields.category = req.body.category;
     } else {
       errors.msg = "Category not defined";
+      return res.status(400).json(errors);
+    }
+    // Location Logic
+    const cities = cc.getCities(req.user.country);
+    if (cities) {
+      if (cities.indexOf(req.body.location) > -1) {
+        productFields.location = req.body.location;
+      } else {
+        errors.msg = "City not defined";
+        return res.status(400).json(errors);
+      }
+    } else {
+      errors.msg = "City not defined";
       return res.status(400).json(errors);
     }
 
@@ -59,7 +68,7 @@ router.post(
   }
 );
 
-//@route   GET api/promo-product
+//@route   GET api/product
 //@desc    Products For Logged In Company
 //@access  Private
 router.get(
@@ -80,7 +89,7 @@ router.get(
   }
 );
 
-//@route   GET api/promo-product
+//@route   GET api/product
 //@desc    All Promotion products
 //@access  Public
 router.get("/all", (req, res) => {
