@@ -4,8 +4,11 @@
   "description": "A platform for people to see all promotions going on in their neighbooh",
   "main": "server.js",
   "scripts": {
+    "client-install": "npm install --prefix client",
     "start": "node server.js",
-    "server": "nodemon server.js"
+    "server": "nodemon server.js",
+    "client": "npm start --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "author": "Adonis Rumbwere and Advance Ngwarati",
   "license": "MIT",
