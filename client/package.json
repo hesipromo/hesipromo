@@ -4,10 +4,17 @@
   "private": true,
   "dependencies": {
     "antd": "^3.15.2",
+    "classnames": "^2.2.6",
     "customize-cra": "^0.2.12",
+    "enquire-js": "^0.2.1",
+    "rc-queue-anim": "^1.6.12",
+    "rc-scroll-anim": "^2.5.6",
     "react": "^16.8.4",
     "react-app-rewired": "^2.1.1",
-    "react-dom": "^16.8.4",
+    "react-document-title": "^2.0.3",
+    "react-dom": "^16.8.5",
+    "react-github-button": "^0.1.11",
+    "react-router-dom": "^5.0.0",
     "react-scripts": "^2.1.8"
   },
   "scripts": {
