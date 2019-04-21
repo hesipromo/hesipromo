@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { logoutUser } from '../../actions/authActions';
-import { clearCurrentProfile } from '../../actions/profileActions';
+import { logoutUser } from '../../../actions/authActions';
+import { clearCurrentProfile } from '../../../actions/profileActions';
 
-class Navbar extends Component {
+class Header extends Component {
   onLogoutClick(e) {
     e.preventDefault();
     this.props.clearCurrentProfile();
@@ -48,24 +48,24 @@ class Navbar extends Component {
 
     const guestLinks = (
       <ul className="navbar-nav ml-auto">
-        <li className="nav-item">
-          <Link className="nav-link" to="/register">
-            Sign Up
+      <li className="nav-item">
+          <Link className="nav-link" to="/login">
+            Login
           </Link>
         </li>
         <li className="nav-item">
-          <Link className="nav-link" to="/login">
-            Login
+          <Link className="nav-link" to="/register">
+            Sign Up
           </Link>
         </li>
       </ul>
     );
 
     return (
-      <nav className="navbar navbar-expand-sm navbar-dark bg-dark mb-4">
+      <nav className="navbar navbar-expand-sm navbar-light mb-4">
         <div className="container">
           <Link className="navbar-brand" to="/">
-            DevConnector
+            HesiPromo
           </Link>
           <button
             className="navbar-toggler"
@@ -77,14 +77,6 @@ class Navbar extends Component {
           </button>
 
           <div className="collapse navbar-collapse" id="mobile-nav">
-            <ul className="navbar-nav mr-auto">
-              <li className="nav-item">
-                <Link className="nav-link" to="/profiles">
-                  {' '}
-                  Developers
-                </Link>
-              </li>
-            </ul>
             {isAuthenticated ? authLinks : guestLinks}
           </div>
         </div>
@@ -93,7 +85,7 @@ class Navbar extends Component {
   }
 }
 
-Navbar.propTypes = {
+Header.propTypes = {
   logoutUser: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired
 };
@@ -103,5 +95,5 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps, { logoutUser, clearCurrentProfile })(
-  Navbar
+  Header
 );

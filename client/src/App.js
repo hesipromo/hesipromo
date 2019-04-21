@@ -10,9 +10,9 @@ import store from './store';
 
 import PrivateRoute from './components/common/PrivateRoute';
 
-import Navbar from './components/layout/Navbar';
-import Footer from './components/layout/Footer';
-import Landing from './components/layout/Landing';
+import Header from './components/Home/Header/Header';
+import Footer from './components/Home/Footer/Footer';
+import Landing from './components/Home/Landing/Landing';
 import Register from './components/auth/Register';
 import Login from './components/auth/Login';
 import Dashboard from './components/dashboard/Dashboard';
@@ -55,7 +55,7 @@ class App extends Component {
       <Provider store={store}>
         <Router>
           <div className="App">
-            <Navbar />
+            <Header />
             <Route exact path="/" component={Landing} />
             <div className="container">
               <Route exact path="/register" component={Register} />
