@@ -1,0 +1,10 @@
+.nav-promo{
+    color: #080;
+}
+.nav-link{
+    color: #fff !important;
+    background-color: #080;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    border-color: #080;
+}

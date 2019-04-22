@@ -5,6 +5,8 @@ import { connect } from 'react-redux';
 import { logoutUser } from '../../../actions/authActions';
 import { clearCurrentProfile } from '../../../actions/profileActions';
 
+import "./Header.css";
+
 class Header extends Component {
   onLogoutClick(e) {
     e.preventDefault();
@@ -48,14 +50,9 @@ class Header extends Component {
 
     const guestLinks = (
       <ul className="navbar-nav ml-auto">
-      <li className="nav-item">
-          <Link className="nav-link" to="/login">
-            Login
-          </Link>
-        </li>
         <li className="nav-item">
-          <Link className="nav-link" to="/register">
-            Sign Up
+          <Link className="nav-link" to="/login">
+            Log in
           </Link>
         </li>
       </ul>
@@ -65,7 +62,7 @@ class Header extends Component {
       <nav className="navbar navbar-expand-sm navbar-light mb-4">
         <div className="container">
           <Link className="navbar-brand" to="/">
-            HesiPromo
+            Hesi <span className="nav-promo">Promo</span>
           </Link>
           <button
             className="navbar-toggler"
