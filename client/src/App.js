@@ -59,8 +59,8 @@ class App extends Component {
           <div className="App">
             <Header />
             <Route exact path="/" component={Landing} />
-            <HowItWorks />
-            <Concept />
+            <Route exact path="/" component={HowItWorks} />
+            <Route exact path="/" component={Concept} />
             <div className="container">
               <Route exact path="/register" component={Register} />
               <Route exact path="/login" component={Login} />

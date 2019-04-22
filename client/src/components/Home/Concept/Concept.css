@@ -1,20 +1,25 @@
-.features-icons {
-    padding-top: 7rem;
-    padding-bottom: 7rem;
+.showcase .showcase-text {
+    padding: 3rem;
   }
   
-  .features-icons .features-icons-item {
-    max-width: 20rem;
+  .showcase .showcase-img-1 {
+    min-height: 30rem;
+    background-image: url('img/bg-showcase-1.jpg');
+    background-size: cover;
+  }
+  .showcase .showcase-img-2 {
+    min-height: 30rem;
+    background-image: url('img/bg-showcase-2.jpg');
+    background-size: cover;
+  }
+  .showcase .showcase-img-3 {
+    min-height: 30rem;
+    background-image: url('img/bg-showcase-3.jpg');
+    background-size: cover;
   }
   
-  .features-icons .features-icons-item .features-icons-icon {
-    height: 7rem;
-  }
-  
-  .features-icons .features-icons-item .features-icons-icon i {
-    font-size: 4.5rem;
-  }
-  
-  .features-icons .features-icons-item:hover .features-icons-icon i {
-    font-size: 5rem;
+  @media (min-width: 768px) {
+    .showcase .showcase-text {
+      padding: 7rem;
+    }
   }
