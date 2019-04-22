@@ -13,6 +13,8 @@ import PrivateRoute from './components/common/PrivateRoute';
 import Header from './components/Home/Header/Header';
 import Footer from './components/Home/Footer/Footer';
 import Landing from './components/Home/Landing/Landing';
+import HowItWorks from "./components/Home/HowItWorks/HowItWorks";
+import Concept from './components/Home/Concept/Concept';
 import Register from './components/auth/Register';
 import Login from './components/auth/Login';
 import Dashboard from './components/dashboard/Dashboard';
@@ -57,6 +59,8 @@ class App extends Component {
           <div className="App">
             <Header />
             <Route exact path="/" component={Landing} />
+            <HowItWorks />
+            <Concept />
             <div className="container">
               <Route exact path="/register" component={Register} />
               <Route exact path="/login" component={Login} />
