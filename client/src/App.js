@@ -15,6 +15,7 @@ import Footer from './components/Home/Footer/Footer';
 import Landing from './components/Home/Landing/Landing';
 import HowItWorks from "./components/Home/HowItWorks/HowItWorks";
 import Concept from './components/Home/Concept/Concept';
+import ReadyToGetStarted from './components/Home/ReadyToGetStarted/ReadyToGetStarted';
 import Register from './components/auth/Register';
 import Login from './components/auth/Login';
 import Dashboard from './components/dashboard/Dashboard';
@@ -61,6 +62,7 @@ class App extends Component {
             <Route exact path="/" component={Landing} />
             <Route exact path="/" component={HowItWorks} />
             <Route exact path="/" component={Concept} />
+            <Route exact path="/" component={ReadyToGetStarted} />
             <div className="container">
               <Route exact path="/register" component={Register} />
               <Route exact path="/login" component={Login} />
