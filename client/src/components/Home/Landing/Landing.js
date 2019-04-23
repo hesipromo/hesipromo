@@ -23,7 +23,7 @@ class Landing extends Component {
                 <h1 className="mb-5">Never miss a promotion, discount from your favourite Stores!</h1>
               </div>
               <div className="col-xl-6 mx-auto">
-                <h3 className="mb-5">Food, drinks and grcoeries promos up for grabs.</h3>
+                <h3 className="mb-5">Food, drinks and groceries promos up for grabs.</h3>
               </div>
               
               <div className="col-md-10 col-lg-8 col-xl-7 mx-auto">
