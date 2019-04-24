@@ -52,7 +52,7 @@ class Header extends Component {
       <ul className="navbar-nav ml-auto">
         <li className="nav-item">
           <Link className="nav-link" to="/login">
-            Log in
+            Signin / Sign Up
           </Link>
         </li>
       </ul>
