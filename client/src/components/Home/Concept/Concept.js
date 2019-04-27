@@ -25,7 +25,7 @@ return(
         <div className="col-lg-6 order-lg-2 text-white showcase-img-3"></div>
         <div className="col-lg-6 order-lg-1 my-auto showcase-text">
           <h2>Save Time &amp; Save Money</h2>
-          <p className="lead mb-0">Landing Page is just HTML and CSS with a splash of SCSS for users who demand some deeper customization options. Out of the box, just add your content and images, and your new landing page will be ready to go!</p>
+          <p className="lead mb-0">Team up and group buy with you friends. We can negotiate with a store for a discount!</p>
         </div>
       </div>
     </div>
