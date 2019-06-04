@@ -2,9 +2,10 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const keys = require("../../config/keys");
 const passport = require("passport");
 const cc = require("full-countries-cities");
+
+require('dotenv').config();
 
 // Load Input Validation
 const validateRegisterInput = require("../../validation/company-register");
@@ -83,7 +84,7 @@ router.post("/login", (req, res) => {
         //Sign Token
         jwt.sign(
           payload,
-          keys.secretOrKey,
+          process.env.SECRETKEY,
           { expiresIn: 3600 },
           (err, token) => {
             res.json({

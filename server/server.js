@@ -10,6 +10,7 @@ const admin = require("./routes/api/admin");
 const product = require("./routes/api/products");
 
 const app = express();
+require('dotenv').config();
 
 //Body parser middleware
 app.use(bodyParser.urlencoded({
@@ -17,12 +18,18 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(bodyParser.json());
 
-// DB Config
-const db = require("./config/keys").mongoURI;
+
+//=================================
+//         SERVE UP STATIC ASSEST
+//=================================
+if(process.env.MODE_ENV === 'production'){
+  app.use(express.static("client/build"));
+}
+
 
 // Connect to MongoDB
 mongoose
-  .connect(db)
+  .connect(process.env.MONGODB_URI)
   .then(() => console.log("MongoDB Connected"))
   .catch(err => console.log(err));
 
@@ -30,7 +37,7 @@ mongoose
 app.use(passport.initialize());
 
 //Passport Config
-require("./config/passport")(passport);
+require("../config/passport")(passport);
 
 // Use Routes
 app.use("/api/company/", company);

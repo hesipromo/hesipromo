@@ -2,18 +2,20 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const keys = require("../../config/keys");
 const passport = require("passport");
 
+require('dotenv').config();
+
 // Load Input Validation
-const validateRegisterInput = require("../../validation/admin-register");
-const validateLoginInput = require("../../validation/admin-login");
+const validateRegisterInput = require("../../validation/client-register");
+const validateLoginInput = require("../../validation/client-login");
 
-// Load Admin model
-const Admin = require("../../models/Admin");
+// Load Client model
+const Client = require("../../models/Client");
+const Product = require("../../models/Product");
 
-//@route   POST api/admin/register
-//@desc    Register Admin
+//@route   POST api/clients/register
+//@desc    Register Client
 //@access  Public
 
 router.post("/register", (req, res) => {
@@ -23,12 +25,12 @@ router.post("/register", (req, res) => {
   if (!isValid) {
     return res.status(400).json(errors);
   }
-  Admin.findOne({ email: req.body.email }).then(admin => {
-    if (admin) {
+  Client.findOne({ email: req.body.email }).then(client => {
+    if (client) {
       errors.email = "Email already exits";
       return res.status(400).json(errors);
     } else {
-      const newAdmin = new Admin({
+      const newClient = new Client({
         name: req.body.name,
         email: req.body.email,
         phonenumber: req.body.phonenumber,
@@ -36,12 +38,12 @@ router.post("/register", (req, res) => {
       });
 
       bcrypt.genSalt(10, (err, salt) => {
-        bcrypt.hash(newAdmin.password, salt, (err, hash) => {
+        bcrypt.hash(newClient.password, salt, (err, hash) => {
           if (err) throw err;
-          newAdmin.password = hash;
-          newAdmin
+          newClient.password = hash;
+          newClient
             .save()
-            .then(admin => res.json(admin))
+            .then(client => res.json(client))
             .catch(err => console.log(err));
         });
       });
@@ -49,8 +51,8 @@ router.post("/register", (req, res) => {
   });
 });
 
-//@route   POST api/admin/login
-//@desc    Login Admin / Returning a Token
+//@route   POST api/clients/login
+//@desc    Login Client / Returning a Token
 //@access  Public
 
 router.post("/login", (req, res) => {
@@ -64,23 +66,23 @@ router.post("/login", (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
 
-  //Find Admin by email
-  Admin.findOne({ email }).then(admin => {
-    //Check for Admin
-    if (!admin) {
-      errors.email = "Admin not found";
+  //Find Client by email
+  Client.findOne({ email }).then(client => {
+    //Check for Client
+    if (!client) {
+      errors.email = "User not found";
       return res.status(404).json(errors);
     }
 
     //Check Password
-    bcrypt.compare(password, admin.password).then(isMatch => {
+    bcrypt.compare(password, client.password).then(isMatch => {
       if (isMatch) {
-        //Admin Matched
-        const payload = { id: admin.id, name: admin.name }; // Create JWT Payload
+        //Client Matched
+        const payload = { id: client.id, name: client.name }; // Create JWT Payload
         //Sign Token
         jwt.sign(
           payload,
-          keys.secretOrKey,
+          process.env.SECRETKEY,
           { expiresIn: 3600 },
           (err, token) => {
             res.json({
@@ -97,44 +99,67 @@ router.post("/login", (req, res) => {
   });
 });
 
-//@route   GET api/admin/current
-//@desc    Return current logged in admin
+//@route   GET api/clients/current
+//@desc    Return current client
 //@access  Private
 
 router.get(
   "/current",
-  passport.authenticate("admin", { session: false }),
+  passport.authenticate("client", { session: false }),
   (req, res) => {
     res.json(req.user);
   }
 );
 
-// @route   GET api/admin/all
-// @desc    Return  all admins
+/* ClIENT PROFILE */
+
+// @route   GET api/clients/profile/
+// @desc    Get client profile
+// @access  Private
+router.get(
+  "/profile",
+  passport.authenticate("client", { session: false }),
+  (req, res) => {
+    const errors = {};
+
+    Client.findOne({ _id: req.user.id })
+      .then(client => {
+        if (!client) {
+          errors.noclientprofile = "There is no profile for this client";
+          return res.status(404).json(errors);
+        }
+        res.json(client);
+      })
+      .catch(err => res.status(404).json(err));
+  }
+);
+
+// @route   GET api/clients/profile/all
+// @desc    Get all client profiles
 // @access  Public
-router.get("/all", (req, res) => {
+router.get("/profile/all", (req, res) => {
   const errors = {};
 
-  Admin.find()
-    .then(admin => {
-      if (!admin) {
+  Client.find()
+    .then(client => {
+      if (!client) {
         errors.noclientprofile = "There are no clients profile";
         return res.status(404).json(errors);
       }
 
-      res.json(admin);
+      res.json(client);
     })
     .catch(err =>
       res.status(404).json({ profile: "There are no clients profile" })
     );
 });
 
-// @route   POST api/admin/profile
-// @desc    Edit admin profile
+// @route   POST api/clients/profile
+// @desc    Create or edit client profile
 // @access  Private
 router.post(
-  "/profile",
-  passport.authenticate("admin", { session: false }),
+  "/",
+  passport.authenticate("client", { session: false }),
   (req, res) => {
     //   TODO: Fields validation
 
@@ -166,30 +191,30 @@ router.post(
       profileFields.phonenumber = req.user.phonenumber;
     }
 
-    Admin.findOne({ _id: req.user.id }).then(admin => {
-      if (admin) {
+    Client.findOne({ _id: req.user.id }).then(client => {
+      if (client) {
         // Update
-        Admin.findOneAndUpdate(
+        Client.findOneAndUpdate(
           { _id: req.user.id },
           { $set: profileFields },
           { new: true }
-        ).then(admin => res.json(admin));
+        ).then(client => res.json(client));
       } else {
         // Save Profile
-        new Admin(profileFields).save().then(profile => res.json(profile));
+        new Client(profileFields).save().then(profile => res.json(profile));
       }
     });
   }
 );
 
-// @route   DELETE api/admin
-// @desc    Delete admin
+// @route   DELETE api/clients
+// @desc    Delete client
 // @access  Private
 router.delete(
   "/",
-  passport.authenticate("admin", { session: false }),
+  passport.authenticate("client", { session: false }),
   (req, res) => {
-    Admin.findOneAndRemove({ _id: req.user.id }).then(() => {
+    Client.findOneAndRemove({ _id: req.user.id }).then(() => {
       res.json({ success: true });
     });
   }
