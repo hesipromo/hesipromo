@@ -82,6 +82,7 @@ class Header extends Component {
   }
 }
 
+
 Header.propTypes = {
   logoutUser: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired
