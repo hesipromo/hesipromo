@@ -13,9 +13,7 @@ const app = express();
 require('dotenv').config();
 
 //Body parser middleware
-app.use(bodyParser.urlencoded({
-  extended: false
-}));
+app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
 
