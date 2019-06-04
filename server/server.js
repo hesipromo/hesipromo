@@ -37,7 +37,7 @@ mongoose
 app.use(passport.initialize());
 
 //Passport Config
-require("../config/passport")(passport);
+require("./middleware/passport")(passport);
 
 // Use Routes
 app.use("/api/company/", company);
