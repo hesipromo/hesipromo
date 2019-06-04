@@ -26,7 +26,6 @@ if(process.env.MODE_ENV === 'production'){
   app.use(express.static("client/build"));
 }
 
-
 // Connect to MongoDB
 mongoose
   .connect(process.env.MONGODB_URI)
