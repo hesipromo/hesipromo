@@ -21,7 +21,7 @@
     "express": "^4.16.4",
     "full-countries-cities": "0.0.9",
     "jsonwebtoken": "^8.5.0",
-    "mongoose": "^5.4.15",
+    "mongoose": "^5.7.5",
     "passport": "^0.4.0",
     "passport-jwt": "^4.0.0",
     "validator": "^10.11.0"
